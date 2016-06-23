@@ -1,0 +1,220 @@
+Classes ‘data.table’ and 'data.frame':	45000 obs. of  9 variables:
+ $ widget_id   : chr  "y214837" "c117827" "e785982" "e58449" ...
+ $ construction: chr  "steel" "nickel" "nickel" "nickel" ...
+ $ size        : num  3.2 7.1 4.1 3.8 2.5 7 11.3 5 9 3.1 ...
+ $ weight      : num  25.6 56.8 41 118.4 20 ...
+ $ height      : num  4.41 5.62 4.8 4.64 4.1 5.67 6.93 5.05 6.15 4.38 ...
+ $ zip         : int  94112 94158 94118 94130 94114 94129 94121 94122 94158 94108 ...
+ $ quality     : chr  "great" "bad" "good" "good" ...
+ $ style       : chr  "double-circle" "oval" "triangle" "rectangle" ...
+ $ price       : int  954 2215 772 833 575 2507 4998 1020 3418 761 ...
+ - attr(*, ".internal.selfref")=<externalptr> 
+  widget_id         construction            size            weight          height            zip          quality             style          
+ Length:45000       Length:45000       Min.   : 2.000   Min.   : 16.0   Min.   : 0.000   Min.   :94102   Length:45000       Length:45000      
+ Class :character   Class :character   1st Qu.: 4.000   1st Qu.: 38.7   1st Qu.: 4.710   1st Qu.:94109   Class :character   Class :character  
+ Mode  :character   Mode  :character   Median : 7.000   Median : 71.0   Median : 5.700   Median :94117   Mode  :character   Mode  :character  
+                                       Mean   : 7.994   Mean   : 79.5   Mean   : 5.734   Mean   :94119                                        
+                                       3rd Qu.:10.400   3rd Qu.:105.0   3rd Qu.: 6.540   3rd Qu.:94129                                        
+                                       Max.   :50.100   Max.   :450.9   Max.   :10.740   Max.   :94158                                        
+     price        
+ Min.   :  -99.0  
+ 1st Qu.:  933.8  
+ Median : 2376.0  
+ Mean   : 3905.5  
+ 3rd Qu.: 5299.0  
+ Max.   :18823.0  
+data.initial 
+
+ 9  Variables      45000  Observations
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+widget_id 
+      n missing  unique 
+  45000       0   45000 
+
+lowest : a100282 a100283 a100691 a100843 a10085 , highest: z995334 z995682 z996331 z998724 z999777 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+construction 
+      n missing  unique 
+  45000       0       7 
+
+          aluminum brass bronze copper nickel steel titanium
+Frequency     7957  4516   2342   6941   9368  8217     5659
+%               18    10      5     15     21    18       13
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+size 
+      n missing  unique    Info    Mean     .05     .10     .25     .50     .75     .90     .95 
+  45000       0     268       1   7.994     3.0     3.1     4.0     7.0    10.4    15.1    17.1 
+
+lowest :  2.0  2.1  2.2  2.3  2.4, highest: 40.0 40.1 41.3 45.0 50.1 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+weight 
+      n missing  unique    Info    Mean     .05     .10     .25     .50     .75     .90     .95 
+  45000       0    1668       1    79.5    25.6    28.0    38.7    71.0   105.0   150.0   175.0 
+
+lowest :  16.0  16.8  17.6  18.0  18.4, highest: 350.9 360.0 371.7 390.0 450.9 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+height 
+      n missing  unique    Info    Mean     .05     .10     .25     .50     .75     .90     .95 
+  45000       0     548       1   5.734    4.29    4.35    4.71    5.70    6.54    7.31    7.67 
+
+lowest :  0.00  3.73  3.74  3.76  3.79, highest: 10.01 10.02 10.14 10.23 10.74 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+zip 
+      n missing  unique    Info    Mean     .05     .10     .25     .50     .75     .90     .95 
+  45000       0      27       1   94119   94103   94104   94109   94117   94129   94133   94134 
+
+lowest : 94102 94103 94104 94105 94107, highest: 94131 94132 94133 94134 94158 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+quality 
+      n missing  unique 
+  45000       0       5 
+
+           bad  good great  okay terrible
+Frequency 4108 11509 17950 10092     1341
+%            9    26    40    22        3
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+style 
+      n missing  unique 
+  44574     426       8 
+
+          circle double-circle double-square double-triangle  oval rectangle square triangle
+Frequency    610          3027          4174            1491 10783      6724   7601    10164
+%              1             7             9               3    24        15     17       23
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+price 
+      n missing  unique    Info    Mean     .05     .10     .25     .50     .75     .90     .95 
+  45000       0   10787       1    3906   524.0   626.0   933.8  2376.0  5299.0  9804.4 13113.1 
+
+lowest :   -99   326   327   334   335, highest: 18803 18804 18806 18818 18823 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+     widget_id construction size weight height   zip quality style price
+  1:   u122101        brass  3.1   27.9   4.33 94115    good    NA   571
+  2:   u873082       copper  6.8   61.2   5.80 94131    good    NA  1708
+  3:   e697700       copper  5.2   46.8   5.23 94123   great    NA  1639
+  4:   b444425       nickel  7.0   70.0   5.70 94132    okay    NA  2748
+  5:   c838231       copper  3.0   27.0   4.27 94105   great    NA   665
+ ---                                                                    
+422:   z722462       nickel 11.2  100.8   6.91 94109    good    NA  8219
+423:   u605975        brass 11.2  112.0   6.68 94134    good    NA  5119
+424:   j485054     aluminum 12.0  125.0   6.91 94129    good    NA  9442
+425:   m122444       copper 11.4   91.2   6.74 94114    good    NA  5809
+426:   t659863       nickel  3.3   94.0   4.54 94116    good    NA  1094
+
+Call:
+lm(formula = price ~ ., data = data.train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-15610.6   -591.7   -179.3    380.8  10752.9 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)          -1.156e+04  4.560e+04  -0.253  0.79993    
+constructionbrass    -1.209e+03  2.412e+01 -50.131  < 2e-16 ***
+constructionbronze   -2.126e+03  3.052e+01 -69.645  < 2e-16 ***
+constructioncopper   -7.244e+02  2.109e+01 -34.349  < 2e-16 ***
+constructionnickel   -2.225e+02  1.955e+01 -11.383  < 2e-16 ***
+constructionsteel     5.859e+01  2.014e+01   2.909  0.00363 ** 
+constructiontitanium  2.558e+02  2.229e+01  11.477  < 2e-16 ***
+size                  1.121e+03  6.243e+00 179.585  < 2e-16 ***
+weight                9.317e-02  2.674e-01   0.348  0.72757    
+height               -1.010e+03  2.439e+01 -41.388  < 2e-16 ***
+zip                   8.898e-02  4.845e-01   0.184  0.85429    
+qualitygood           2.517e+02  2.316e+01  10.869  < 2e-16 ***
+qualitygreat          3.695e+02  2.227e+01  16.596  < 2e-16 ***
+qualityokay           2.098e+02  2.357e+01   8.901  < 2e-16 ***
+qualityterrible      -7.038e+02  4.027e+01 -17.476  < 2e-16 ***
+styledouble-circle    5.052e+03  5.814e+01  86.882  < 2e-16 ***
+styledouble-square    5.001e+03  5.662e+01  88.321  < 2e-16 ***
+styledouble-triangle  5.429e+03  6.280e+01  86.452  < 2e-16 ***
+styleoval             3.724e+03  5.387e+01  69.124  < 2e-16 ***
+stylerectangle        4.643e+03  5.498e+01  84.446  < 2e-16 ***
+stylesquare           2.773e+03  5.407e+01  51.288  < 2e-16 ***
+styletriangle         4.340e+03  5.411e+01  80.213  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1128 on 35280 degrees of freedom
+Multiple R-squared:  0.9211,	Adjusted R-squared:  0.9211 
+F-statistic: 1.962e+04 on 21 and 35280 DF,  p-value: < 2.2e-16
+
+
+Call:
+lm(formula = price ~ style + quality + height + size + construction, 
+    data = data.train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-15615.9   -591.6   -179.4    380.2  10753.5 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(>|t|)    
+(Intercept)          -3181.954    110.783 -28.723   <2e-16 ***
+styledouble-circle    5051.677     58.143  86.884   <2e-16 ***
+styledouble-square    5000.564     56.617  88.323   <2e-16 ***
+styledouble-triangle  5429.143     62.798  86.454   <2e-16 ***
+styleoval             3723.706     53.869  69.125   <2e-16 ***
+stylerectangle        4642.614     54.976  84.449   <2e-16 ***
+stylesquare           2772.927     54.066  51.288   <2e-16 ***
+styletriangle         4340.302     54.109  80.215   <2e-16 ***
+qualitygood            251.709     23.159  10.869   <2e-16 ***
+qualitygreat           369.551     22.265  16.598   <2e-16 ***
+qualityokay            209.783     23.569   8.901   <2e-16 ***
+qualityterrible       -703.827     40.269 -17.478   <2e-16 ***
+height               -1009.493     24.391 -41.388   <2e-16 ***
+size                  1121.897      5.772 194.361   <2e-16 ***
+constructionbrass    -1208.930     24.115 -50.132   <2e-16 ***
+constructionbronze   -2125.597     30.520 -69.646   <2e-16 ***
+constructioncopper    -724.406     21.090 -34.348   <2e-16 ***
+constructionnickel    -222.472     19.548 -11.381   <2e-16 ***
+constructionsteel       58.643     20.143   2.911   0.0036 ** 
+constructiontitanium   255.802     22.287  11.478   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1128 on 35282 degrees of freedom
+Multiple R-squared:  0.9211,	Adjusted R-squared:  0.9211 
+F-statistic: 2.168e+04 on 19 and 35282 DF,  p-value: < 2.2e-16
+
+                  GVIF Df GVIF^(1/(2*Df))
+style         1.333571  7        1.020774
+quality       1.105096  4        1.012570
+height       20.961392  1        4.578361
+size         21.025125  1        4.585316
+construction  1.177630  6        1.013719
+                  GVIF Df GVIF^(1/(2*Df))
+style         1.333571  7        1.020774
+quality       1.105096  4        1.012570
+height       20.961392  1        4.578361
+size         21.025125  1        4.585316
+construction  1.177630  6        1.013719
+                  GVIF Df GVIF^(1/(2*Df))
+style         1.333571  7        1.020774
+quality       1.105096  4        1.012570
+height       20.961392  1        4.578361
+size         21.025125  1        4.585316
+construction  1.177630  6        1.013719
+                  GVIF Df GVIF^(1/(2*Df))
+style         1.333571  7        1.020774
+quality       1.105096  4        1.012570
+height       20.961392  1        4.578361
+size         21.025125  1        4.585316
+construction  1.177630  6        1.013719
+                  GVIF Df GVIF^(1/(2*Df))
+style         1.333571  7        1.020774
+quality       1.105096  4        1.012570
+height       20.961392  1        4.578361
+size         21.025125  1        4.585316
+construction  1.177630  6        1.013719
+                  GVIF Df GVIF^(1/(2*Df))
+style         1.333571  7        1.020774
+quality       1.105096  4        1.012570
+height       20.961392  1        4.578361
+size         21.025125  1        4.585316
+construction  1.177630  6        1.013719
+                  GVIF Df GVIF^(1/(2*Df))
+style         1.333571  7        1.020774
+quality       1.105096  4        1.012570
+height       20.961392  1        4.578361
+size         21.025125  1        4.585316
+construction  1.177630  6        1.013719

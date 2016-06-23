@@ -1,0 +1,586 @@
+# Rattle is Copyright (c) 2006-2015 Togaware Pty Ltd.
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:07:50 x86_64-w64-mingw32 
+
+# Rattle version 4.1.0 user 'shiva'
+
+# This log file captures all Rattle interactions as R commands. 
+
+Export this log to a file using the Export button or the Tools 
+# menu to save a log of all your activity. This facilitates repeatability. For example, exporting 
+# to a file called 'myrf01.R' will allow you to type in the R Console 
+# the command source('myrf01.R') and so repeat all actions automatically. 
+# Generally, you will want to edit the file to suit your needs. You can also directly 
+# edit this current log in place to record additional information before exporting. 
+ 
+# Saving and loading projects also retains this log.
+
+# We begin by loading the required libraries.
+
+library(rattle)   # To access the weather dataset and utility commands.
+library(magrittr) # For the %>% and %<>% operators.
+
+# This log generally records the process of building a model. However, with very 
+# little effort the log can be used to score a new dataset. The logical variable 
+# 'building' is used to toggle between generating transformations, as when building 
+# a model, and simply using the transformations, as when scoring a dataset.
+
+building <- TRUE
+scoring  <- ! building
+
+
+# A pre-defined value is used to reset the random seed so that results are repeatable.
+
+crv$seed <- 42 
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:08:19 x86_64-w64-mingw32 
+
+# Load an R data frame.
+
+crs$dataset <- data.final
+
+# Display a simple summary (structure) of the dataset.
+
+str(crs$dataset)
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:08:20 x86_64-w64-mingw32 
+
+# Note the user selections. 
+
+# Build the training/validate/test datasets.
+
+set.seed(28262) 
+crs$nobs <- nrow(crs$dataset) # 44127 observations 
+crs$sample <- crs$train <- sample(nrow(crs$dataset), 0.7*crs$nobs) # 30888 observations
+crs$validate <- sample(setdiff(seq_len(nrow(crs$dataset)), crs$train), 0.15*crs$nobs) # 6619 observations
+crs$test <- setdiff(setdiff(seq_len(nrow(crs$dataset)), crs$train), crs$validate) # 6620 observations
+
+# The following variable selections have been noted.
+
+crs$input <- c("size", "weight", "height", "zip",
+     "quality", "style", "price")
+
+crs$numeric <- c("size", "weight", "height", "zip",
+     "price")
+
+crs$categoric <- c("quality", "style")
+
+crs$target  <- "construction"
+crs$risk    <- NULL
+crs$ident   <- NULL
+crs$ignore  <- NULL
+crs$weights <- NULL
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:09:10 x86_64-w64-mingw32 
+
+# Note the user selections. 
+
+# Build the training/validate/test datasets.
+
+set.seed(28262) 
+crs$nobs <- nrow(crs$dataset) # 44127 observations 
+crs$sample <- crs$train <- sample(nrow(crs$dataset), 0.7*crs$nobs) # 30888 observations
+crs$validate <- sample(setdiff(seq_len(nrow(crs$dataset)), crs$train), 0.15*crs$nobs) # 6619 observations
+crs$test <- setdiff(setdiff(seq_len(nrow(crs$dataset)), crs$train), crs$validate) # 6620 observations
+
+# The following variable selections have been noted.
+
+crs$input <- c("construction", "size", "weight", "height",
+     "quality", "style")
+
+crs$numeric <- c("size", "weight", "height")
+
+crs$categoric <- c("construction", "quality", "style")
+
+crs$target  <- "price"
+crs$risk    <- NULL
+crs$ident   <- NULL
+crs$ignore  <- "zip"
+crs$weights <- NULL
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:11:11 x86_64-w64-mingw32 
+
+# Random Forest 
+
+# The 'randomForest' package provides the 'randomForest' function.
+
+library(randomForest, quietly=TRUE)
+
+# Build the Random Forest model.
+
+set.seed(crv$seed)
+crs$rf <- randomForest::randomForest(price ~ .,
+      data=crs$dataset[crs$sample,c(crs$input, crs$target)], 
+      ntree=500,
+      mtry=3,
+      sampsize=c(2000),
+      importance=TRUE,
+      na.action=randomForest::na.roughfix,
+      replace=FALSE)
+
+# Generate textual output of 'Random Forest' model.
+
+crs$rf
+
+# List the importance of the variables.
+
+rn <- round(randomForest::importance(crs$rf), 2)
+rn[order(rn[,1], decreasing=TRUE),]
+
+# Time taken: 17.16 secs
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:12:12 x86_64-w64-mingw32 
+
+# Plot the relative importance of the variables.
+
+randomForest::varImpPlot(crs$rf, main="")
+title(main="Variable Importance Random Forest data.final",
+    sub=paste("Rattle", format(Sys.time(), "%Y-%b-%d %H:%M:%S"), Sys.info()["user"]))
+
+# Display tree number 1.
+
+printRandomForests(crs$rf, 1)
+
+# Plot the error rate against the number of trees.
+
+plot(crs$rf, main="")
+legend("topright", c(""), text.col=1:6, lty=1:3, col=1:3)
+title(main="Error Rates Random Forest data.final",
+    sub=paste("Rattle", format(Sys.time(), "%Y-%b-%d %H:%M:%S"), Sys.info()["user"]))
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:15:09 x86_64-w64-mingw32 
+
+# Load the data.
+
+crs$dataset <- read.csv("file:///D:/TCS/train.csv", na.strings=c(".", "NA", "", "?"), strip.white=TRUE, encoding="UTF-8")
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:15:10 x86_64-w64-mingw32 
+
+# Note the user selections. 
+
+# Build the training/validate/test datasets.
+
+set.seed(28262) 
+crs$nobs <- nrow(crs$dataset) # 35302 observations 
+crs$sample <- crs$train <- sample(nrow(crs$dataset), 0.7*crs$nobs) # 24711 observations
+crs$validate <- sample(setdiff(seq_len(nrow(crs$dataset)), crs$train), 0.15*crs$nobs) # 5295 observations
+crs$test <- setdiff(setdiff(seq_len(nrow(crs$dataset)), crs$train), crs$validate) # 5296 observations
+
+# The following variable selections have been noted.
+
+crs$input <- c("size", "weight", "height", "zip",
+     "quality", "style", "price")
+
+crs$numeric <- c("size", "weight", "height", "zip",
+     "price")
+
+crs$categoric <- c("quality", "style")
+
+crs$target  <- "construction"
+crs$risk    <- NULL
+crs$ident   <- "X"
+crs$ignore  <- NULL
+crs$weights <- NULL
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:15:27 x86_64-w64-mingw32 
+
+# Note the user selections. 
+
+# Build the training/validate/test datasets.
+
+set.seed(28262) 
+crs$nobs <- nrow(crs$dataset) # 35302 observations 
+crs$sample <- crs$train <- sample(nrow(crs$dataset), 0.7*crs$nobs) # 24711 observations
+crs$validate <- sample(setdiff(seq_len(nrow(crs$dataset)), crs$train), 0.15*crs$nobs) # 5295 observations
+crs$test <- setdiff(setdiff(seq_len(nrow(crs$dataset)), crs$train), crs$validate) # 5296 observations
+
+# The following variable selections have been noted.
+
+crs$input <- c("construction", "size", "weight", "height",
+     "quality", "style")
+
+crs$numeric <- c("size", "weight", "height")
+
+crs$categoric <- c("construction", "quality", "style")
+
+crs$target  <- "price"
+crs$risk    <- NULL
+crs$ident   <- NULL
+crs$ignore  <- c("X", "zip")
+crs$weights <- NULL
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:15:39 x86_64-w64-mingw32 
+
+# Random Forest 
+
+# The 'randomForest' package provides the 'randomForest' function.
+
+library(randomForest, quietly=TRUE)
+
+# Build the Random Forest model.
+
+set.seed(crv$seed)
+crs$rf <- randomForest::randomForest(price ~ .,
+      data=crs$dataset[crs$sample,c(crs$input, crs$target)], 
+      ntree=500,
+      mtry=2,
+      sampsize=c(2000),
+      importance=TRUE,
+      na.action=randomForest::na.roughfix,
+      replace=FALSE)
+
+# Generate textual output of 'Random Forest' model.
+
+crs$rf
+
+# List the importance of the variables.
+
+rn <- round(randomForest::importance(crs$rf), 2)
+rn[order(rn[,1], decreasing=TRUE),]
+
+# Time taken: 14.03 secs
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:16:06 x86_64-w64-mingw32 
+
+# Random Forest 
+
+# The 'randomForest' package provides the 'randomForest' function.
+
+library(randomForest, quietly=TRUE)
+
+# Build the Random Forest model.
+
+set.seed(crv$seed)
+crs$rf <- randomForest::randomForest(price ~ .,
+      data=crs$dataset[crs$sample,c(crs$input, crs$target)], 
+      ntree=500,
+      mtry=3,
+      sampsize=c(2000),
+      importance=TRUE,
+      na.action=randomForest::na.roughfix,
+      replace=FALSE)
+
+# Generate textual output of 'Random Forest' model.
+
+crs$rf
+
+# List the importance of the variables.
+
+rn <- round(randomForest::importance(crs$rf), 2)
+rn[order(rn[,1], decreasing=TRUE),]
+
+# Time taken: 15.34 secs
+
+# Plot the error rate against the number of trees.
+
+plot(crs$rf, main="")
+legend("topright", c(""), text.col=1:6, lty=1:3, col=1:3)
+title(main="Error Rates Random Forest train.csv",
+    sub=paste("Rattle", format(Sys.time(), "%Y-%b-%d %H:%M:%S"), Sys.info()["user"]))
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:17:19 x86_64-w64-mingw32 
+
+# Plot the relative importance of the variables.
+
+randomForest::varImpPlot(crs$rf, main="")
+title(main="Variable Importance Random Forest train.csv",
+    sub=paste("Rattle", format(Sys.time(), "%Y-%b-%d %H:%M:%S"), Sys.info()["user"]))
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:18:15 x86_64-w64-mingw32 
+
+# Evaluate model performance. 
+
+# Read a dataset from file for testing the model.
+
+crs$testset <- read.csv("D:/TCS/test.csv", na.strings=c(".", "NA", "", "?"), header=TRUE, sep=",", encoding="UTF-8", strip.white=TRUE)
+
+# Ensure the levels are the same as the training data for variable `construction'.
+
+levels(crs$testset[["construction"]]) <- 
+  c(levels(crs$testset[["construction"]]), 
+    setdiff(levels(crs$dataset[["construction"]]), 
+               levels(crs$testset[["construction"]])))
+
+# Ensure the levels are the same as the training data for variable `quality'.
+
+levels(crs$testset[["quality"]]) <- 
+  c(levels(crs$testset[["quality"]]), 
+    setdiff(levels(crs$dataset[["quality"]]), 
+               levels(crs$testset[["quality"]])))
+
+# Ensure the levels are the same as the training data for variable `style'.
+
+levels(crs$testset[["style"]]) <- 
+  c(levels(crs$testset[["style"]]), 
+    setdiff(levels(crs$dataset[["style"]]), 
+               levels(crs$testset[["style"]])))
+
+# RF: Generate a Predicted v Observed plot for rf model on test.csv.
+
+crs$pr <- predict(crs$rf, newdata=na.omit(crs$testset[,c(crs$input, crs$target)]))
+
+# Obtain the observed output for the dataset.
+
+obs <- subset(na.omit(crs$testset[,c(crs$input, crs$target)]), select=crs$target)
+
+# Handle in case categoric target treated as numeric.
+
+obs.rownames <- rownames(obs)
+obs <- as.numeric(obs[[1]])
+obs <- data.frame(price=obs)
+rownames(obs) <- obs.rownames
+
+# Combine the observed values with the predicted.
+
+fitpoints <- na.omit(cbind(obs, Predicted=crs$pr))
+
+# Obtain the pseudo R2 - a correlation.
+
+fitcorr <- format(cor(fitpoints[,1], fitpoints[,2])^2, digits=4)
+
+# Plot settings for the true points and best fit.
+
+op <- par(c(lty="solid", col="blue"))
+
+# Display the observed (X) versus predicted (Y) points.
+
+plot(fitpoints[[1]], fitpoints[[2]], asp=1, xlab="price", ylab="Predicted")
+
+# Generate a simple linear fit between predicted and observed.
+
+prline <- lm(fitpoints[,2] ~ fitpoints[,1])
+
+# Add the linear fit to the plot.
+
+abline(prline)
+
+# Add a diagonal representing perfect correlation.
+
+par(c(lty="dashed", col="black"))
+abline(0, 1)
+
+# Include a pseudo R-square on the plot
+
+legend("bottomright",  sprintf(" Pseudo R-square=%s ", fitcorr),  bty="n")
+
+# Add a title and grid to the plot.
+
+title(main="Predicted vs. Observed
+ Random Forest Model
+ test.csv",
+    sub=paste("Rattle", format(Sys.time(), "%Y-%b-%d %H:%M:%S"), Sys.info()["user"]))
+grid()
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:18:32 x86_64-w64-mingw32 
+
+# Evaluate model performance. 
+
+# Ensure the levels are the same as the training data for variable `construction'.
+
+levels(crs$testset[["construction"]]) <- 
+  c(levels(crs$testset[["construction"]]), 
+    setdiff(levels(crs$dataset[["construction"]]), 
+               levels(crs$testset[["construction"]])))
+
+# Ensure the levels are the same as the training data for variable `quality'.
+
+levels(crs$testset[["quality"]]) <- 
+  c(levels(crs$testset[["quality"]]), 
+    setdiff(levels(crs$dataset[["quality"]]), 
+               levels(crs$testset[["quality"]])))
+
+# Ensure the levels are the same as the training data for variable `style'.
+
+levels(crs$testset[["style"]]) <- 
+  c(levels(crs$testset[["style"]]), 
+    setdiff(levels(crs$dataset[["style"]]), 
+               levels(crs$testset[["style"]])))
+
+# Risk Chart: requires the ggplot2 package.
+
+library(ggplot2)
+
+# Generate a risk chart.
+
+# Rattle provides evaluateRisk() and riskchart().
+
+crs$pr <- predict(crs$rf, newdata=na.omit(crs$testset[,c(crs$input, crs$target)]))
+crs$eval <- evaluateRisk(crs$pr, na.omit(crs$testset[,c(crs$input, crs$target)])$price)
+print(riskchart(crs$pr, 
+                na.omit(crs$testset[,c(crs$input, crs$target)])$price, 
+                title="Performance Chart Random Forest train.csv ", show.lift=FALSE, show.precision=FALSE, legend.horiz=FALSE))
+
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:18:56 x86_64-w64-mingw32 
+
+# Score a dataset. 
+
+# Ensure the levels are the same as the training data for variable `construction'.
+
+levels(crs$testset[["construction"]]) <- 
+  c(levels(crs$testset[["construction"]]), 
+    setdiff(levels(crs$dataset[["construction"]]), 
+               levels(crs$testset[["construction"]])))
+
+# Ensure the levels are the same as the training data for variable `quality'.
+
+levels(crs$testset[["quality"]]) <- 
+  c(levels(crs$testset[["quality"]]), 
+    setdiff(levels(crs$dataset[["quality"]]), 
+               levels(crs$testset[["quality"]])))
+
+# Ensure the levels are the same as the training data for variable `style'.
+
+levels(crs$testset[["style"]]) <- 
+  c(levels(crs$testset[["style"]]), 
+    setdiff(levels(crs$dataset[["style"]]), 
+               levels(crs$testset[["style"]])))
+
+# Obtain predictions for the Random Forest model on train.csv.
+
+crs$pr <- predict(crs$rf, newdata=na.omit(crs$testset[,c(crs$input)]))
+
+# Extract the relevant variables from the dataset.
+
+sdata <- subset(crs$testset[,], select=c("price"))
+
+# Output the combined data.
+
+write.csv(cbind(sdata, crs$pr), file="D:\TCS\train_score_idents.csv", row.names=FALSE)
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:19:25 x86_64-w64-mingw32 
+
+# Evaluate model performance. 
+
+# Ensure the levels are the same as the training data for variable `construction'.
+
+levels(crs$testset[["construction"]]) <- 
+  c(levels(crs$testset[["construction"]]), 
+    setdiff(levels(crs$dataset[["construction"]]), 
+               levels(crs$testset[["construction"]])))
+
+# Ensure the levels are the same as the training data for variable `quality'.
+
+levels(crs$testset[["quality"]]) <- 
+  c(levels(crs$testset[["quality"]]), 
+    setdiff(levels(crs$dataset[["quality"]]), 
+               levels(crs$testset[["quality"]])))
+
+# Ensure the levels are the same as the training data for variable `style'.
+
+levels(crs$testset[["style"]]) <- 
+  c(levels(crs$testset[["style"]]), 
+    setdiff(levels(crs$dataset[["style"]]), 
+               levels(crs$testset[["style"]])))
+
+# RF: Generate a Predicted v Observed plot for rf model on train.csv.
+
+crs$pr <- predict(crs$rf, newdata=na.omit(crs$testset[,c(crs$input, crs$target)]))
+
+# Obtain the observed output for the dataset.
+
+obs <- subset(na.omit(crs$testset[,c(crs$input, crs$target)]), select=crs$target)
+
+# Handle in case categoric target treated as numeric.
+
+obs.rownames <- rownames(obs)
+obs <- as.numeric(obs[[1]])
+obs <- data.frame(price=obs)
+rownames(obs) <- obs.rownames
+
+# Combine the observed values with the predicted.
+
+fitpoints <- na.omit(cbind(obs, Predicted=crs$pr))
+
+# Obtain the pseudo R2 - a correlation.
+
+fitcorr <- format(cor(fitpoints[,1], fitpoints[,2])^2, digits=4)
+
+# Plot settings for the true points and best fit.
+
+op <- par(c(lty="solid", col="blue"))
+
+# Display the observed (X) versus predicted (Y) points.
+
+plot(fitpoints[[1]], fitpoints[[2]], asp=1, xlab="price", ylab="Predicted")
+
+# Generate a simple linear fit between predicted and observed.
+
+prline <- lm(fitpoints[,2] ~ fitpoints[,1])
+
+# Add the linear fit to the plot.
+
+abline(prline)
+
+# Add a diagonal representing perfect correlation.
+
+par(c(lty="dashed", col="black"))
+abline(0, 1)
+
+# Include a pseudo R-square on the plot
+
+legend("bottomright",  sprintf(" Pseudo R-square=%s ", fitcorr),  bty="n")
+
+# Add a title and grid to the plot.
+
+title(main="Predicted vs. Observed
+ Random Forest Model
+ train.csv",
+    sub=paste("Rattle", format(Sys.time(), "%Y-%b-%d %H:%M:%S"), Sys.info()["user"]))
+grid()
+
+#============================================================
+# Rattle timestamp: 2016-05-22 16:20:18 x86_64-w64-mingw32 
+
+# Evaluate model performance. 
+
+# Ensure the levels are the same as the training data for variable `construction'.
+
+levels(crs$testset[["construction"]]) <- 
+  c(levels(crs$testset[["construction"]]), 
+    setdiff(levels(crs$dataset[["construction"]]), 
+               levels(crs$testset[["construction"]])))
+
+# Ensure the levels are the same as the training data for variable `quality'.
+
+levels(crs$testset[["quality"]]) <- 
+  c(levels(crs$testset[["quality"]]), 
+    setdiff(levels(crs$dataset[["quality"]]), 
+               levels(crs$testset[["quality"]])))
+
+# Ensure the levels are the same as the training data for variable `style'.
+
+levels(crs$testset[["style"]]) <- 
+  c(levels(crs$testset[["style"]]), 
+    setdiff(levels(crs$dataset[["style"]]), 
+               levels(crs$testset[["style"]])))
+
+# Risk Chart: requires the ggplot2 package.
+
+library(ggplot2)
+
+# Generate a risk chart.
+
+# Rattle provides evaluateRisk() and riskchart().
+
+crs$pr <- predict(crs$rf, newdata=na.omit(crs$testset[,c(crs$input, crs$target)]))
+crs$eval <- evaluateRisk(crs$pr, na.omit(crs$testset[,c(crs$input, crs$target)])$price)
+print(riskchart(crs$pr, 
+                na.omit(crs$testset[,c(crs$input, crs$target)])$price, 
+                title="Performance Chart Random Forest train.csv ", show.lift=FALSE, show.precision=FALSE, legend.horiz=FALSE))
