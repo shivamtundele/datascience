@@ -1,6 +1,5 @@
 Structure of Directory
 ----------------------------
-Documentation - Includes main documentation for project.
 Logs - Logs for Console Output.
 R Visualization - Includes all generated plots.
 Rattle - Output folder for Rattle package in R.
