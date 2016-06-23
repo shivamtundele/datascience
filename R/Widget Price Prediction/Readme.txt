@@ -1,3 +1,6 @@
+Background: Foobar Inc. is a fictional company in the Bay Area that produces widgets. Widgets have
+soared in popularity over the past year, and Foobar Inc., has hired you to do an analysis of their data.
+
 Structure of Directory
 ----------------------------
 Logs - Logs for Console Output.
