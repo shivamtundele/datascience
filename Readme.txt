@@ -9,3 +9,5 @@ Data Science Projects Includes -
 - Cross Validation
 - Results
 - Conclusion
+
+Note: Some Projects May Include Class Presentations.
